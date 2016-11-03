@@ -52,7 +52,7 @@ public class JavaMailApp extends HttpServlet
         new javax.mail.Authenticator() {
  protected PasswordAuthentication getPasswordAuthentication() 
  {
-   return new PasswordAuthentication("cbcarlos07@gmail.com", "brito1985.");
+   return new PasswordAuthentication("email@email.com", "senha do email");
  }
         });
             /** Ativa Debug para sessão */

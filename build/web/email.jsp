@@ -34,6 +34,7 @@
         String email = request.getParameter("email");
         
             {
+            System.out.println("Preparando envio do e-mail");
             Properties props = new Properties();
             /** Parâmetros de conexão com servidor Gmail */
             props.put("mail.smtp.host", "smtp.gmail.com");
@@ -42,7 +43,7 @@
             props.put("mail.smtp.auth", "true");
             props.put("mail.smtp.port", "465");
             
-            Authenticator auth = new Autenticar("cbcarlos07@gmail.com", "brito1985.");
+            Authenticator auth = new Autenticar("email@email.com", "senha do email");
             Session mailSession = Session.getDefaultInstance(props, auth);
            
             
@@ -52,10 +53,16 @@
             try {
 
                   Message message = new MimeMessage(mailSession);
-                  message.setFrom(new InternetAddress("carlos.brito@ham.org.br")); //Remetente
+                  
+                  message.setFrom(new InternetAddress("notificacoes@ham.org.br")); //Remetente
 
                   Address[] toUser = InternetAddress //Destinatário(s)
-                 .parse("carlos.brito@ham.org.br");  
+                  .parse(email);  
+                  Address[] cc = InternetAddress //Destinatário(s)
+                  .parse(email);  
+                  //message.addRecipients(Message.RecipientType.CC,  cc);// se quiser enviar uma mensagem com copia oculta
+                  
+                 //.parse("carlos.brito@ham.org.br");  
                   //"carlos.brito@ham.org.br, joanes.cardoso@ham.org.br, vicente.sarubbi@ham.org.br"
                   message.setRecipients(Message.RecipientType.TO, toUser);
                   SimpleDateFormat data_br = new SimpleDateFormat("dd/MM/yyyy");
@@ -84,13 +91,13 @@
                                            "  <center><h1>Indicadores Estrat&eacute;gicos</h1></center>"+
                                            "<font face='Arial' size='2.5'"+
                                            
-                                           "  <div style='display: inline;'>"+
+                                          // "  <div style='display: inline;'>"+
                                            
                                            "  <div class='col-lg-6' style='float: left;'>"+
                                            "    <table class='table table-striped table-hover' cellspacing='0' cellpadding='0' border='2'>  " +
                                            "      <thead> " +
                                            "         <tr >   "+
-                                           "               <th colspan='4' ><center>Leitos</center></th>"+
+                                           "               <th colspan='4' bgcolor='9ecb80'><center>Leitos</center></th>"+
                                            "         </tr>   "+
                                            "         <tr bgcolor='#C0C0C0' > " +
                                            "            <th width='300'>Indicadores</th> " +
@@ -99,7 +106,7 @@
                                            "            <th >Acumulado</th> " +                           
                                            "        </tr> " +
                                            "    </thead>";
-                  System.out.print("Leitos: ");
+                  
                   Financeiro_Controller fc = new Financeiro_Controller();
                   Financeiro financeiro = new Financeiro();
                   List lista = fc.getLeitos();
@@ -115,7 +122,7 @@
                       corpoDaMensagem += "<tr>"+
                                          "  <td>"+financeiro.getInd_Unid()+"</td>"+
                                          "  <td align='right'>"+financeiro.getOntem()+"</td>"+
-                                         "  <td align='center' bgcolor='#8ed07e'>"+financeiro.getMedia()+"</td>"+
+                                         "  <td align='right' bgcolor='9ecb80'>"+financeiro.getMedia()+"</td>"+
                                          "  <td align='right'>"+str_acum+"</td>";  
 
                       corpoDaMensagem += "</tr>";
@@ -123,14 +130,14 @@
                   corpoDaMensagem += "</tbody>";
                   corpoDaMensagem += "</table>";
                   corpoDaMensagem += "&nbsp;&nbsp;&nbsp;&nbsp;";
-                  corpoDaMensagem += "</div>";   
+                 // corpoDaMensagem += "</div>";   
                   
                   
-                  corpoDaMensagem += "  <div class='col-lg-6' style='float: right;'>";
+                //  corpoDaMensagem += "  <div class='col-lg-6' style='float: right;'>";
                   corpoDaMensagem += "    <table class='table table-striped table-hover' cellspacing='0' cellpadding='0' border='2'>  " +
                                            "      <thead> " +
                                            "         <tr >   "+
-                                           "               <th colspan='5' ><center>Pacientes Dia (Meia Noite)</center></th>"+
+                                           "               <th colspan='5' bgcolor='9ecb80'><center>Pacientes Dia (Meia Noite)</center></th>"+
                                            "         </tr>   "+
                                            "         <tr bgcolor='#C0C0C0' > " +
                                            "            <th width='300'>Unidade</th> " +
@@ -140,7 +147,7 @@
                                            "            <th>Acumulado</th> " +                           
                                            "        </tr> " +
                                            "    </thead>";
-                  System.out.print("Pacientes dia (Meia noite): ");
+                  
                   lista = fc.getPacienteInternado();
                   iterator = lista.iterator();
                   corpoDaMensagem += "<tbody>";
@@ -163,7 +170,7 @@
                                          "  <td>"+financeiro.getInd_Unid()+"</td>"+
                                          "  <td align='right'>"+financeiro.getLeito()+"</td>"+
                                          "  <td align='right'>"+financeiro.getOntem()+"</td>"+
-                                         "  <td align='center' bgcolor='#8ed07e'>"+str_media+"</td>"+
+                                         "  <td align='right' bgcolor='9ecb80'>"+str_media+"</td>"+
                                          "  <td align='right'>"+str_acum+"</td>";  
 
                       corpoDaMensagem += "</tr>";
@@ -181,48 +188,37 @@
                                          "  <td> TOTAL </td>"+
                                          "  <td align='right'>"+leitos+"</td>"+
                                          "  <td align='right'>"+ontem+"</td>"+
-                                         "  <td align='center' bgcolor='#8ed07e'>"+String.format("%.2f", media / total)+"</td>"+
+                                         "  <td align='right' bgcolor='#9ecb80'>"+String.format("%.2f", media / total)+"</td>"+
                                          "  <td align='right'>"+acumulado+"</td>";  
                   corpoDaMensagem += "</tbody>";
                   corpoDaMensagem += "</table>";
                   
-                  corpoDaMensagem += "</div>";
+                  //corpoDaMensagem += "</div>";
                   
-                  corpoDaMensagem += "<br >";
-                  corpoDaMensagem += "<br>";
-                  corpoDaMensagem += "<br>";
-                  corpoDaMensagem += "<br>";
-                  corpoDaMensagem += "<br >";
-                  corpoDaMensagem += "<br>";
-                  corpoDaMensagem += "<br>";
-                  corpoDaMensagem += "<br>";
-                  corpoDaMensagem += "<br>";
-                  corpoDaMensagem += "<br >";
-                  corpoDaMensagem += "<br>";
-                  corpoDaMensagem += "<br>";
-                  corpoDaMensagem += "<br>";
-                  corpoDaMensagem += "<br>";
-                  corpoDaMensagem += "<br >";
+                  corpoDaMensagem += "&nbsp;&nbsp;&nbsp;&nbsp;";
+                  corpoDaMensagem += "<hr />"; //linha
                   corpoDaMensagem += "<br>";
                   corpoDaMensagem += "<br>";
                   
-                  corpoDaMensagem += "<hr />";
+                  
+                  
+                  
                   
                    
-                  corpoDaMensagem += "<div style='float: left;'>";
+                //  corpoDaMensagem += "<div style='float: left;'>";
                   corpoDaMensagem += "    <table class='table table-striped table-hover' cellspacing='0' cellpadding='0' border='2'>  " +
                                            "      <thead> " +
                                            "         <tr >   "+
-                                           "               <th colspan='4'><center>Centro Cir&uacute;rgico</center></th>"+
+                                           "               <th colspan='4' bgcolor='#ffe389'><center>Centro Cir&uacute;rgico</center></th>"+
                                            "         </tr>   "+
                                            "         <tr bgcolor='#C0C0C0' > " +
-                                           "            <th width='300'>Indicador</th> " +
+                                           "            <th width='300' >Indicador</th> " +
                                            "            <th>Ontem</th> " +
                                            "            <th >M&eacute;dia</th> " +
                                            "            <th width='70'>Total</th> " +                           
                                            "        </tr> " +
                                            "    </thead>";
-                  System.out.print("Centro Cirúrgico: ");
+                  
                   lista = fc.getCentroCirurgico();
                   iterator = lista.iterator();
                   corpoDaMensagem += "<tbody>";
@@ -245,7 +241,7 @@
                       corpoDaMensagem += "<tr>"+
                                          "  <td>"+financeiro.getInd_Unid()+"</td>"+
                                          "  <td align='right'>"+str_ontem+"</td>"+
-                                         "  <td align='center' bgcolor='#8ed07e'>"+str_media+"</td>"+
+                                         "  <td align='right' bgcolor='#ffe389'>"+str_media+"</td>"+
                                          "  <td align='right'>"+str_acum+"</td>";  
                       corpoDaMensagem += "</tr>";
                 
@@ -253,16 +249,16 @@
                  
                   corpoDaMensagem += "</tbody>";
                   corpoDaMensagem += "</table>";
-
-                  corpoDaMensagem += "</div>";
+                  corpoDaMensagem += "&nbsp;&nbsp;&nbsp;&nbsp;";
+                //  corpoDaMensagem += "</div>";
                   
                   
                   
-                  corpoDaMensagem += "<div style='float: right;'>";
+               //   corpoDaMensagem += "<div style='float: right;'>";
                   corpoDaMensagem += "    <table class='table table-striped table-hover' cellspacing='0' cellpadding='0' border='2'>  " +
                                            "      <thead> " +
                                            "         <tr >   "+
-                                           "               <th colspan='4'><center>Hemodin&acirc;mica</center></th>"+
+                                           "               <th colspan='4' bgcolor='#ffe389'><center>Hemodin&acirc;mica</center></th>"+
                                            "         </tr>   "+
                                            "         <tr bgcolor='#C0C0C0' > " +
                                            "            <th width='300'>Indicador</th> " +
@@ -271,7 +267,7 @@
                                            "            <th>Acumulado</th> " +                           
                                            "        </tr> " +
                                            "    </thead>";
-                  System.out.print("Hemodinâmica: ");
+                  
                   lista = fc.getHemodinamica();
                   iterator = lista.iterator();
                   corpoDaMensagem += "<tbody>";
@@ -292,38 +288,26 @@
                       corpoDaMensagem += "<tr>"+
                                          "  <td>"+financeiro.getInd_Unid()+"</td>"+
                                          "  <td align='right'>"+str_ontem+"</td>"+
-                                         "  <td align='center' bgcolor='#8ed07e'>"+str_media+"</td>"+
+                                         "  <td align='right' bgcolor='#ffe389'>"+str_media+"</td>"+
                                          "  <td align='right'>"+str_acum+"</td>";  
                       corpoDaMensagem += "</tr>";
                   }
                   corpoDaMensagem += "</tbody>";
                   corpoDaMensagem += "</table>";
-                  corpoDaMensagem += "</div>";
+               //   corpoDaMensagem += "</div>";
                   
-                  corpoDaMensagem += "<br >";
-                  corpoDaMensagem += "<br>";
-                  corpoDaMensagem += "<br>";
-                  corpoDaMensagem += "<br>";
-                  corpoDaMensagem += "<br>";
-                  corpoDaMensagem += "<br >";
-                  corpoDaMensagem += "<br>";
-                  corpoDaMensagem += "<br>";
-                  corpoDaMensagem += "<br>";
-                  corpoDaMensagem += "<br>";
-                  corpoDaMensagem += "<br >";
-                  corpoDaMensagem += "<br>";
-                  corpoDaMensagem += "<br>";
-                  corpoDaMensagem += "<br>";
-                  corpoDaMensagem += "<br >";
-                  corpoDaMensagem += "<br>";
-                  corpoDaMensagem += "<br>";
-                  
+                  corpoDaMensagem += "&nbsp;&nbsp;&nbsp;&nbsp;";
                   corpoDaMensagem += "<hr />";
-                  corpoDaMensagem += "<div style='float: left;'>";
+                  corpoDaMensagem += "<br>";
+                  corpoDaMensagem += "<br>";
+                 
+                  
+                  
+               //   corpoDaMensagem += "<div style='float: left;'>";
                   corpoDaMensagem += "    <table class='table table-striped table-hover' cellspacing='0' cellpadding='0' border='2'>  " +
                                            "      <thead> " +
                                            "         <tr >   "+
-                                           "               <th colspan='4'><center>Diagn&oacute;stico Por Imagem</center></th>"+
+                                           "               <th colspan='4' bgcolor='#8fbae4'><center>Diagn&oacute;stico por Imagem</center></th>"+
                                            "         </tr>   "+
                                            "         <tr bgcolor='#C0C0C0' > " +
                                            "            <th width='300'>Indicador</th> " +
@@ -332,7 +316,7 @@
                                            "            <th>Acumulado</th> " +                           
                                            "        </tr> " +
                                            "    </thead>";
-                  System.out.print("Fianóstico por Imagem: ");
+                  
                   lista = fc.getDiagnoticoImagem();
                   iterator = lista.iterator();
                   corpoDaMensagem += "<tbody>";
@@ -357,7 +341,7 @@
                       corpoDaMensagem += "<tr>"+
                                          "  <td>"+financeiro.getInd_Unid()+"</td>"+
                                          "  <td align='right'>"+str_ontem+"</td>"+
-                                         "  <td align='center' bgcolor='#8ed07e'>"+str_media+"</td>"+
+                                         "  <td align='right' bgcolor='#8fbae4'>"+str_media+"</td>"+
                                          "  <td align='right'>"+str_acum+"</td>";  
                       corpoDaMensagem += "</tr>";
                       
@@ -369,17 +353,17 @@
                   corpoDaMensagem += "<tr>"+
                                          "  <td> TOTAL </td>"+
                                          "  <td align='right'>"+ontem+"</td>"+
-                                         "  <td align='center' bgcolor='#8ed07e'>"+String.format("%.2f", media / total) +"</td>"+
+                                         "  <td align='right' bgcolor='#8fbae4'>"+String.format("%.2f", media / total) +"</td>"+
                                          "  <td align='right'>"+acumulado+"</td>";  
                   corpoDaMensagem += "</tbody>";
                   corpoDaMensagem += "</table>";
-                  corpoDaMensagem += "</div>";
-                  
-                  corpoDaMensagem += "<div style='float: right;'>";
+                //  corpoDaMensagem += "</div>";
+                  corpoDaMensagem += "&nbsp;&nbsp;&nbsp;&nbsp;";
+               //  corpoDaMensagem += "<div style='float: right;'>";
                   corpoDaMensagem += "    <table class='table table-striped table-hover' cellspacing='0' cellpadding='0' border='2'>  " +
                                            "      <thead> " +
                                            "         <tr >   "+
-                                           "               <th colspan='4'><center>Laborat&oacute;rio</center></th>"+
+                                           "               <th colspan='4' bgcolor='#8fbae4'><center>Laborat&oacute;rio</center></th>"+
                                            "         </tr>   "+
                                            "         <tr bgcolor='#C0C0C0' > " +
                                            "            <th width='300'>Tipo</th> " +
@@ -388,7 +372,7 @@
                                            "            <th>Acumulado</th> " +                           
                                            "        </tr> " +
                                            "    </thead>";
-                  System.out.print("Laboratório: ");
+                  
                   lista = fc.getLaboratorio();
                   iterator = lista.iterator();
                   corpoDaMensagem += "<tbody>";
@@ -412,9 +396,9 @@
                        str_acum = financeiro.getAcumulado();
                       corpoDaMensagem += "<tr>"+
                                          "  <td>"+financeiro.getInd_Unid()+"</td>"+
-                                         "  <td align='right'>"+formato_decimal.format(str_ontem)+"</td>"+
-                                         "  <td align='center' bgcolor='#8ed07e'>"+str_media+"</td>"+
-                                         "  <td align='right'>"+formato_decimal.format(str_acum)+"</td>";  
+                                         "  <td align='right'>"+str_ontem+"</td>"+
+                                         "  <td align='right' bgcolor='#8fbae4'>"+str_media+"</td>"+
+                                         "  <td align='right'>"+str_acum+"</td>";  
                       corpoDaMensagem += "</tr>";
                       ontem  += Integer.parseInt(str_ontem);
                       media  += Double.parseDouble(str_media.replace(",",".")) ;                      
@@ -424,33 +408,23 @@
                   corpoDaMensagem += "<tr>"+
                                          "  <td> TOTAL </td>"+
                                          "  <td align='right'>"+formato_decimal.format(ontem)+"</td>"+
-                                         "  <td align='center' bgcolor='#8ed07e'>"+String.format("%.2f", media / total)+"</td>"+
+                                         "  <td align='right' bgcolor='#8fbae4'>"+String.format("%.2f", media / total)+"</td>"+
                                          "  <td align='right'>"+formato_decimal.format(acumulado)+"</td>";  
                   corpoDaMensagem += "</tbody>";
                   corpoDaMensagem += "</table>";
-                  corpoDaMensagem += "</div>";
-                  corpoDaMensagem += "<br>";
-                  corpoDaMensagem += "<br >";
-                  corpoDaMensagem += "<br>";
-                  corpoDaMensagem += "<br>";
-                  corpoDaMensagem += "<br>";
-                  corpoDaMensagem += "<br>";
-                  corpoDaMensagem += "<br >";
-                  corpoDaMensagem += "<br>";
-                  corpoDaMensagem += "<br>";
-                  corpoDaMensagem += "<br>";
-                  corpoDaMensagem += "<br>";
-                  corpoDaMensagem += "<br >";
-                  corpoDaMensagem += "<br>";
+                 // corpoDaMensagem += "</div>";
+                 corpoDaMensagem += "&nbsp;&nbsp;&nbsp;&nbsp;";
+                  corpoDaMensagem += "<hr />";
                   corpoDaMensagem += "<br>";
                   corpoDaMensagem += "<br>";
                   
-                  corpoDaMensagem += "<hr />";
-                  corpoDaMensagem += "<div style='float: left;'>";
+                  
+                  
+                //  corpoDaMensagem += "<div style='float: left;'>";
                   corpoDaMensagem += "    <table class='table table-striped table-hover' cellspacing='0' cellpadding='0' border='2'>  " +
                                            "      <thead> " +
                                            "         <tr >   "+
-                                           "               <th colspan='4'><center>Consult&oacute;rio</center></th>"+
+                                           "               <th colspan='4' bgcolor='#FA7F7F' ><center>Consult&oacute;rio</center></th>"+
                                            "         </tr>   "+
                                            "         <tr bgcolor='#C0C0C0' > " +
                                            "            <th width='300'>Tipo</th> " +
@@ -459,7 +433,7 @@
                                            "            <th>Acumulado</th> " +                           
                                            "        </tr> " +
                                            "    </thead>";
-                  System.out.print("Consultório: ");
+                  
                   lista = fc.getConsultorio();
                   iterator = lista.iterator();
                   corpoDaMensagem += "<tbody>";
@@ -480,20 +454,20 @@
                       corpoDaMensagem += "<tr>"+
                                          "  <td>"+financeiro.getInd_Unid()+"</td>"+
                                          "  <td align='right'>"+str_ontem+"</td>"+
-                                         "  <td align='center' bgcolor='#8ed07e'>"+str_media+"</td>"+
+                                         "  <td align='right' bgcolor='#FA7F7F'>"+str_media+"</td>"+
                                          "  <td align='right'>"+str_acum+"</td>";  
                       corpoDaMensagem += "</tr>";
                   }
                   corpoDaMensagem += "</tbody>";
                   corpoDaMensagem += "</table>";
-                  corpoDaMensagem += "</div>";
+                //  corpoDaMensagem += "</div>";
                   
-                  
-                  corpoDaMensagem += "<div style='float: right;'>";
+                   corpoDaMensagem += "&nbsp;&nbsp;&nbsp;&nbsp;";
+                 // corpoDaMensagem += "<div style='float: right;'>";
                   corpoDaMensagem += "    <table class='table table-striped table-hover' cellspacing='0' cellpadding='0' border='2'>  " +
                                            "      <thead> " +
                                            "         <tr >   "+
-                                           "               <th colspan='4'><center>Ambulat&oacute;rio Cardiologia</center></th>"+
+                                           "               <th colspan='4' bgcolor='#FA7F7F'><center>Ambulat&oacute;rio Cardiologia</center></th>"+
                                            "         </tr>   "+
                                            "         <tr bgcolor='#C0C0C0' > " +
                                            "            <th width='300'>Exame</th> " +
@@ -502,7 +476,7 @@
                                            "            <th>Acumulado</th> " +                           
                                            "        </tr> " +
                                            "    </thead>";
-                  System.out.print("Ambulatório Cardiologia: ");
+                  
                   lista = fc.getAmbulatorioCardiologia();
                   iterator = lista.iterator();
                   corpoDaMensagem += "<tbody>";
@@ -526,9 +500,9 @@
                        str_acum = financeiro.getAcumulado();
                       corpoDaMensagem += "<tr>"+
                                          "  <td>"+financeiro.getInd_Unid()+"</td>"+
-                                         "  <td align='right'>"+formato_decimal.format(str_ontem)+"</td>"+
-                                         "  <td align='center' bgcolor='#8ed07e'>"+str_media+"</td>"+
-                                         "  <td align='right'>"+formato_decimal.format(str_acum)+"</td>";  
+                                         "  <td align='right'>"+str_ontem+"</td>"+
+                                         "  <td align='right' bgcolor='#FA7F7F'>"+str_media+"</td>"+
+                                         "  <td align='right'>"+str_acum+"</td>";  
                       corpoDaMensagem += "</tr>";
                       ontem  += Integer.parseInt(str_ontem);
                       try{
@@ -537,38 +511,32 @@
                       acumulado  += Integer.parseInt(str_acum) ;
                       
                   }
+                  String med_total = "0";
+                  if(media > 0){
+                      
+                      med_total = String.format("%.2f", media / total );
+                  }
                   corpoDaMensagem += "<tr>"+
                                          "  <td> TOTAL </td>"+
                                          "  <td align='right'>"+ontem+"</td>"+
-                                         "  <td align='center' bgcolor='#8ed07e'>"+String.format("%.2f", media / total )+"</td>"+
+                                         "  <td align='right' bgcolor='#FA7F7F'>"+med_total+"</td>"+
                                          "  <td align='right'>"+acumulado+"</td>";  
                   corpoDaMensagem += "</tbody>";
                   corpoDaMensagem += "</table>";
-                  corpoDaMensagem += "</div>";
-                  corpoDaMensagem += "<br>";
-                  corpoDaMensagem += "<br>";
-                  corpoDaMensagem += "<br >";
-                  corpoDaMensagem += "<br>";
-                  corpoDaMensagem += "<br>";
-                  corpoDaMensagem += "<br>";
-                  corpoDaMensagem += "<br>";
-                  corpoDaMensagem += "<br >";
-                  corpoDaMensagem += "<br>";
-                  corpoDaMensagem += "<br>";
-                  corpoDaMensagem += "<br>";
-                  corpoDaMensagem += "<br>";
-                  corpoDaMensagem += "<br >";
-                  corpoDaMensagem += "<br>";
-                  corpoDaMensagem += "<br>";
-                  corpoDaMensagem += "<br>";
+                 // corpoDaMensagem += "</div>";
+                  corpoDaMensagem += "&nbsp;&nbsp;&nbsp;&nbsp;";
                   corpoDaMensagem += "<hr />";
+                  corpoDaMensagem += "<br>";
+                  corpoDaMensagem += "<br>";
+                  
+                  
                   
                   
                   
                    corpoDaMensagem += "    <table class='table table-striped table-hover' cellspacing='0' cellpadding='0' border='2'>  " +
                                            "      <thead> " +
                                            "         <tr >   "+
-                                           "               <th colspan='4'><center>Pronto Atendimento</center></th>"+
+                                           "               <th colspan='4' bgcolor='#f8c4a1'><center>Pronto Atendimento</center></th>"+
                                            "         </tr>   "+
                                            "         <tr bgcolor='#C0C0C0' > " +
                                            "            <th width='300'>Tipo</th> " +
@@ -577,7 +545,7 @@
                                            "            <th>Acumulado</th> " +                           
                                            "        </tr> " +
                                            "    </thead>";
-                   System.out.print("Pronto Atendimento: ");
+                   
                   lista = fc.getProntoAtendimento();
                   iterator = lista.iterator();
                   corpoDaMensagem += "<tbody>";
@@ -596,17 +564,40 @@
                     if(financeiro.getAcumulado() != null)
                        str_acum = financeiro.getAcumulado();
                       corpoDaMensagem += "<tr>"+
-                                         "  <td>"+StringUtils.capitalize(financeiro.getInd_Unid())+"</td>"+
+                                         "  <td>"+financeiro.getInd_Unid()+"</td>"+
                                          "  <td align='right'>"+str_ontem+"</td>"+
-                                         "  <td align='center' bgcolor='#8ed07e'>"+str_media+"</td>"+
+                                         "  <td align='right' bgcolor='#f8c4a1'>"+str_media+"</td>"+
                                          "  <td align='right'>"+str_acum+"</td>";  
                       corpoDaMensagem += "</tr>";
+                      ontem  += Integer.parseInt(str_ontem);
+                      try{
+                      media  += Double.parseDouble(str_media.replace(",",".")) ;
+                      }catch(Exception e){}
+                      acumulado  += Integer.parseInt(str_acum) ;
+                      
                   }
+                  med_total = "0";
+                  if(media > 0){
+                      
+                      med_total = String.format("%.2f", media / total );
+                  }
+                  corpoDaMensagem += "<tr>"+
+                                         "  <td> TOTAL </td>"+
+                                         "  <td align='right'>"+ontem+"</td>"+
+                                         "  <td align='right' bgcolor='#f8c4a1'>"+med_total+"</td>"+
+                                         "  <td align='right'>"+acumulado+"</td>";  
+                  
                   corpoDaMensagem += "</tbody>";
                   corpoDaMensagem += "</table>";
-                  corpoDaMensagem += "</div>";
+              //    corpoDaMensagem += "</div>";
+                  corpoDaMensagem += "<br>";
+                  corpoDaMensagem += "<br>";
+                  corpoDaMensagem += "<br>";
+                  corpoDaMensagem += "<br>";
                   corpoDaMensagem += "<br>";
                   corpoDaMensagem += "<hr />";
+                  
+                  
                   corpoDaMensagem += "<br>";
                   corpoDaMensagem += "<br>";
                   corpoDaMensagem += "<br>";

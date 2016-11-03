@@ -24,17 +24,15 @@ public final class ConnectionFactory {
                         
 			
                          Class.forName("oracle.jdbc.driver.OracleDriver");
-                         url ="jdbc:oracle:thin:@//ip-da-maquina/servico";
-                        connection = DriverManager.getConnection(url,"dbamv","#hosp#dvmns");
-			//connection = DriverManager.getConnection("jdbc:h2:src/BDSistemaMusica/SistemaMusica","sa","");
-                        //connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/sistemamusica","root","123");
+                         url ="jdbc:oracle:thin:@//ip-do-servidor/servico";
+                        connection = DriverManager.getConnection(url,"usuario-do-banco","senha-do-banco");
+			
 			System.out.println("Conectado com sucesso");
 		}catch (SQLException e) {
 			e.printStackTrace();
 		}
 		catch (ClassNotFoundException e) {
-                        //JOptionPane.showMessageDialog(null, "Ja existe um Sistema em execução\nerro "+e.getMessage());
-			//System.out.println(e.getMessage());
+                        
                         e.printStackTrace();
                         
 		}

@@ -27,6 +27,7 @@ public class Financeiro_DAO {
     ResultSet resultSet;
     
     public List<Financeiro> getLeitos(){
+        System.out.print("Leitos: ");
         lista = new ArrayList();
         sql =   "  SELECT 1 ind, " +
                 "       NULL, " +
@@ -70,6 +71,7 @@ public class Financeiro_DAO {
     
     
     public List<Financeiro> getPacienteInternado(){
+        System.out.print("Pacientes Internados: ");
         lista = new ArrayList();
         sql =   " SELECT UNIDADE UNIDADE, LEITOS, PACIENTE_DIA_ONTEM, PACIENTE_MEDIA, PACIENTE_DIA_ACUMULADO " +
                 " FROM VDIC_HAM_EMAIL_INDICADOR_PAC ";
@@ -96,6 +98,7 @@ public class Financeiro_DAO {
     
     
       public List<Financeiro> getCentroCirurgico(){
+          System.out.print("Centro Cirúrgico: ");
         lista = new ArrayList();
         sql =   " SELECT INITCAP(CENTRO_CIRURGICO) CENTRO_CIRURGICO, ONTEM, MEDIA, TOTAL " +
                     "FROM VDIC_HAM_INDICADOR_CC ";
@@ -121,6 +124,7 @@ public class Financeiro_DAO {
     
     
       public List<Financeiro> getHemodinamica(){
+          System.out.print("Hemodinâmica: ");
         lista = new ArrayList();
         sql =   " SELECT INITCAP(HEMODINAMICA) HEMODINAMICA, DIA, MEDIA, ACUMULADO " +
                 "FROM VDIC_HAM_INDICADOR_HEMO";
@@ -145,6 +149,7 @@ public class Financeiro_DAO {
     }
       
     public List<Financeiro> getDiagnoticoImagem(){
+        System.out.print("Diagnóstico por Imagem: ");
         lista = new ArrayList();
         sql =   " SELECT INITCAP(LOCAL) LOCAL, ONTEM, MEDIA, ACUMULADO " +
                 "FROM VDIC_HAM_INDICADOR_DIAG";
@@ -169,6 +174,7 @@ public class Financeiro_DAO {
     }
      
    public List<Financeiro> getLaboratorio(){
+       System.out.print("Laboratório: ");
         lista = new ArrayList();
         sql =   " SELECT INITCAP(TIPO) TIPO, ONTEM, MEDIA, ACUMULADO " +
                     "FROM VDIC_HAM_INDICADOR_LABORATORIO";
@@ -194,6 +200,7 @@ public class Financeiro_DAO {
     
    
    public List<Financeiro> getConsultorio(){
+       System.out.print("Consultório: ");
         lista = new ArrayList();
         sql =   "SELECT INITCAP(TIPO) TIPO, ONTEM, MEDIA, ACUMULADO " +
                 "FROM VDIC_HAM_INDICADOR_AMB";
@@ -219,6 +226,7 @@ public class Financeiro_DAO {
    
    
    public List<Financeiro> getAmbulatorioCardiologia(){
+       System.out.print("Ambulatório Cardiologia: ");
         lista = new ArrayList();
         sql =   "SELECT FNC_INIT_LETRAS(EXAME) EXAME, ONTEM, MEDIA, ACUMULADO " +
                 "FROM VDIC_HAM_INDICADOR_CARDIOLOGIA";
@@ -228,7 +236,7 @@ public class Financeiro_DAO {
             stmt = conn.prepareStatement(sql);
             resultSet = stmt.executeQuery();
             while(resultSet.next()){
-                Financeiro financeiro = new Financeiro();
+                Financeiro financeiro = new Financeiro();                
                 financeiro.setInd_Unid(resultSet.getString("EXAME"));
                 financeiro.setOntem(resultSet.getString("ONTEM"));
                 financeiro.setMedia(resultSet.getString("MEDIA"));                
@@ -237,6 +245,8 @@ public class Financeiro_DAO {
             }
             conn.close();
         } catch (SQLException ex) {
+            //System.out.println("Erro: "+ex.printStackTrace());
+            System.out.println("Erro: "+ex.getMessage());
             Logger.getLogger(Financeiro_DAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return lista; 
@@ -244,9 +254,10 @@ public class Financeiro_DAO {
       
    
    public List<Financeiro> getProntoAtendimento(){
+       System.out.print("Pronto Atendimento: ");
         lista = new ArrayList();
-        sql =   "SELECT DESCRICAO, ONTEM, MEDIA, ACUMULADO " +
-                    "FROM VDIC_HAM_INDICADOR_PA";
+        sql =   "SELECT TIPO, ONTEM, MEDIA, ACUMULADO " +
+                 "FROM VDIC_HAM_INDICADOR_PA";
         
         conn = ConnectionFactory.getConnection();
         try {
@@ -254,7 +265,7 @@ public class Financeiro_DAO {
             resultSet = stmt.executeQuery();
             while(resultSet.next()){
                 Financeiro financeiro = new Financeiro();
-                financeiro.setInd_Unid(resultSet.getString("DESCRICAO"));
+                financeiro.setInd_Unid(resultSet.getString("TIPO"));
                 financeiro.setOntem(resultSet.getString("ONTEM"));
                 financeiro.setMedia(resultSet.getString("MEDIA"));                
                 financeiro.setAcumulado(resultSet.getString("ACUMULADO"));

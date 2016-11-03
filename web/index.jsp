@@ -346,15 +346,15 @@
                                 <th>Acumulado</th>
                             </tr>
                         </thead>
-                        <c:set var="item" value="" />
-                        <c:set var="ontem" value="" />
-                        <c:set var="media" value="" />
-                        <c:set var="total" value="" />
+                        <c:set var="item" value="0" />
+                        <c:set var="ontem" value="0" />
+                        <c:set var="media" value="0" />
+                        <c:set var="total" value="0" />
                         <tbody>
                             <c:forEach var="cardiologia" items="${fc.ambulatorioCardiologia}" varStatus="status">
                                 <c:set var="item" value="${status.count}" />
                                 <c:set var="ontem" value="${ontem + cardiologia.ontem}" />
-                                <c:set var="media" value="${media + cardiologia.media}" />
+                                <c:set var="media" value="${media + fn:replace(cardiologia.media,',','.')}" />
                                 <c:set var="total" value="${total + cardiologia.acumulado}" />
                                 <tr>
                                     <td>${cardiologia.ind_Unid}</td>
@@ -390,8 +390,16 @@
                                 <th>Acumulado</th>
                             </tr>
                         </thead>
+                        <c:set var="item" value="0" />
+                        <c:set var="ontem" value="0" />
+                        <c:set var="media" value="0" />
+                        <c:set var="total" value="0" />
                         <tbody>
-                            <c:forEach var="pa" items="${fc.prontoAtendimento}" >
+                            <c:forEach var="pa" items="${fc.prontoAtendimento}" varStatus="status">
+                                <c:set var="item" value="${status.count}" />
+                                <c:set var="ontem" value="${ontem + pa.ontem}" />
+                                <c:set var="media" value="${media + fn:replace(pa.media,',','.')}" />
+                                <c:set var="total" value="${total + pa.acumulado}" />
                                 <tr>
                                     <td>${pa.ind_Unid}</td>
                                     <td>${pa.ontem}</td>
@@ -400,6 +408,14 @@
                                 </tr>
                             </c:forEach>
                         </tbody>
+                        <tfoot>
+                                <tr class="footer-table">
+                                    <td>TOTAL</td>
+                                    <td>${ontem}</td>
+                                    <td><fmt:formatNumber minFractionDigits="2" maxFractionDigits="2" value="${media / item}"/></td>
+                                    <td>${total}</td>
+                                </tr>
+                        </tfoot>
                     </table>
                 </div>
                 
