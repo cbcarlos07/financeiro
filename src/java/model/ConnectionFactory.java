@@ -24,8 +24,8 @@ public final class ConnectionFactory {
                         
 			
                          Class.forName("oracle.jdbc.driver.OracleDriver");
-                         url ="jdbc:oracle:thin:@//ip-do-servidor/servico";
-                        connection = DriverManager.getConnection(url,"usuario-do-banco","senha-do-banco");
+                         url ="jdbc:oracle:thin:@//ip-do-servidor:porta/servico";
+                        connection = DriverManager.getConnection(url,"login","senha");
 			
 			System.out.println("Conectado com sucesso");
 		}catch (SQLException e) {

@@ -14,6 +14,7 @@ function enviar(){
         //alert('Submit');
         //var dados = jQuery( this ).serialize();
         var email = document.getElementById("email").value;
+        var alvo  = document.getElementById("alvo").value;
         
         
         //var cracha = $('#cracha').value;
@@ -21,7 +22,7 @@ function enviar(){
         //console.log("Usuario: "+usuario+" Senha: "+senha);    
         jQuery.ajax({
                 type: "POST",
-                url: "email.jsp",
+                url: alvo,
                 beforeSend: carregando,
                 data: {
                     'email' : email

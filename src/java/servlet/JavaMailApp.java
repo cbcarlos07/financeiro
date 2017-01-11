@@ -6,7 +6,7 @@
 package servlet;
 
 import beans.Financeiro;
-import controller.Financeiro_Controller;
+import controller.Indicador_Controller;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
@@ -52,7 +52,7 @@ public class JavaMailApp extends HttpServlet
         new javax.mail.Authenticator() {
  protected PasswordAuthentication getPasswordAuthentication() 
  {
-   return new PasswordAuthentication("email@email.com", "senha do email");
+   return new PasswordAuthentication("notificacoes@ham.org.br", "@dminti35");
  }
         });
             /** Ativa Debug para sessão */
@@ -108,7 +108,7 @@ else {
                                            "        </tr> " +
                                            "    </thead>";
                   System.out.print("Leitos: ");
-                  Financeiro_Controller fc = new Financeiro_Controller();
+                  Indicador_Controller fc = new Indicador_Controller();
                   Financeiro financeiro = new Financeiro();
                   List lista = fc.getLeitos();
                   Iterator iterator = lista.iterator();

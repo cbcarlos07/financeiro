@@ -1,0 +1,6 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-ear" name="financeiro">
+    <output-path>$PROJECT_DIR$/out/artifacts/financeiro</output-path>
+    <root id="root" />
+  </artifact>
+</component>
